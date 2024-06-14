@@ -12,6 +12,12 @@ function loadStoredData() {
         document.getElementById('password').value = decryptedData.password;
         document.getElementById('subscribeTopic').value = decryptedData.subscribeTopic;
     }
+    
+    const storedSessions = localStorage.getItem('sessions');
+    if (storedSessions) {
+        sessions = JSON.parse(storedSessions);
+        updateSessionTable();
+    }
 }
 
 loadStoredData();
@@ -36,13 +42,14 @@ function connectMQTT() {
     });
 
     client.on('connect', () => {
-        console.log('Conectado al servidor MQTT');
+        showStatusMessage('Connected to MQTT broker', 'success');
         client.subscribe(subscribeTopic);
     });
 
     client.on('message', (topic, message) => {
         const parsedMessage = JSON.parse(message.toString());
         handleIncomingMessage(parsedMessage);
+        displayMessage(topic, message.toString());
     });
 }
 
@@ -63,6 +70,7 @@ function handleIncomingMessage(message) {
             firstAccessDatetime,
             status: true
         });
+        saveSessions();
         updateSessionTable();
     }
 }
@@ -79,6 +87,11 @@ function emulateKey(buttonId) {
         metaKey: false
     });
     document.dispatchEvent(event);
+}
+
+// Guardar sesiones en localStorage
+function saveSessions() {
+    localStorage.setItem('sessions', JSON.stringify(sessions));
 }
 
 // Actualizar tabla de sesiones
@@ -103,6 +116,7 @@ function updateSessionTable() {
         statusCheckbox.checked = session.status;
         statusCheckbox.addEventListener('change', () => {
             session.status = statusCheckbox.checked;
+            saveSessions();
         });
         statusCell.appendChild(statusCheckbox);
         row.appendChild(statusCell);
@@ -115,6 +129,7 @@ function updateSessionTable() {
 function displayMessage(topic, message) {
     const messageList = document.getElementById('messageList');
     const listItem = document.createElement('li');
+    listItem.className = 'list-group-item';
     listItem.textContent = `Topic: ${topic}, Message: ${message}`;
     messageList.appendChild(listItem);
 }
@@ -129,6 +144,18 @@ function sendMessage() {
 // Limpiar localStorage
 function clearLocalStorage() {
     localStorage.removeItem('mqttData');
+    localStorage.removeItem('sessions');
     alert('Local storage cleared');
     location.reload();
+}
+
+// Mostrar mensaje de estado
+function showStatusMessage(message, type) {
+    const statusMessage = document.getElementById('statusMessage');
+    statusMessage.textContent = message;
+    statusMessage.className = `alert alert-${type}`;
+    statusMessage.style.display = 'block';
+    setTimeout(() => {
+        statusMessage.style.display = 'none';
+    }, 3000);
 }

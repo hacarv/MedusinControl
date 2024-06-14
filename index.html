@@ -2,58 +2,63 @@
 <html>
 <head>
     <title>MQTT Web Client</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.2.6/mqtt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="js/script.js" defer></script>
 </head>
 <body>
-    <h1>MQTT Web Client</h1>
-    <div>
-        <label for="brokerUrl">Broker URL:</label>
-        <input type="text" id="brokerUrl"><br>
-        
-        <label for="username">Username:</label>
-        <input type="text" id="username"><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password"><br>
-        
-        <label for="subscribeTopic">Subscribe Topic:</label>
-        <input type="text" id="subscribeTopic"><br>
-        
-        <button onclick="connectMQTT()">Connect</button>
-        <button onclick="clearLocalStorage()">Clear Local Storage</button>
-    </div>
-    <hr>
-    <div>
-        <label for="publishTopic">Publish Topic:</label>
-        <input type="text" id="publishTopic"><br>
-        
-        <label for="message">Message:</label>
-        <input type="text" id="message"><br>
-        
-        <button onclick="sendMessage()">Send Message</button>
-    </div>
-    <hr>
-    <div id="messages">
-        <h2>Received Messages:</h2>
-        <ul id="messageList"></ul>
-    </div>
-    <hr>
-    <div id="sessions">
-        <h2>Sessions</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Session ID</th>
-                    <th>First Access Datetime</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="sessionTableBody">
-                <!-- Session rows will be dynamically added here -->
-            </tbody>
-        </table>
+    <div class="container">
+        <h1 class="mt-5">MQTT Web Client</h1>
+        <div class="mb-4">
+            <label for="brokerUrl" class="form-label">Broker URL:</label>
+            <input type="text" id="brokerUrl" class="form-control"><br>
+            
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" id="username" class="form-control"><br>
+            
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" id="password" class="form-control"><br>
+            
+            <label for="subscribeTopic" class="form-label">Subscribe Topic:</label>
+            <input type="text" id="subscribeTopic" class="form-control"><br>
+            
+            <button class="btn btn-primary" onclick="connectMQTT()">Connect</button>
+            <button class="btn btn-danger" onclick="clearLocalStorage()">Clear Local Storage</button>
+        </div>
+        <div id="statusMessage" class="alert alert-info" style="display: none;"></div>
+        <hr>
+        <div class="mb-4">
+            <label for="publishTopic" class="form-label">Publish Topic:</label>
+            <input type="text" id="publishTopic" class="form-control"><br>
+            
+            <label for="message" class="form-label">Message:</label>
+            <input type="text" id="message" class="form-control"><br>
+            
+            <button class="btn btn-success" onclick="sendMessage()">Send Message</button>
+        </div>
+        <hr>
+        <div id="messages" class="mb-4">
+            <h2>Received Messages:</h2>
+            <ul id="messageList" class="list-group"></ul>
+        </div>
+        <hr>
+        <div id="sessions">
+            <h2>Sessions</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Session ID</th>
+                        <th>First Access Datetime</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="sessionTableBody">
+                    <!-- Session rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
+
