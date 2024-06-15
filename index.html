@@ -38,11 +38,6 @@
             <button class="btn btn-success" onclick="sendMessage()">Send Message</button>
         </div>
         <hr>
-        <div id="messages" class="mb-4">
-            <h2>Received Messages:</h2>
-            <ul id="messageList" class="list-group"></ul>
-        </div>
-        <hr>
         <div id="sessions">
             <h2>Sessions</h2>
             <table class="table table-striped">
@@ -58,7 +53,26 @@
                 </tbody>
             </table>
         </div>
+        <hr>
+        <div id="messages" class="mb-4">
+            <h2>Received Messages:</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Session ID</th>
+                        <th>Topic</th>
+                        <th>Button ID</th>
+                        <th>Received At</th>
+                    </tr>
+                </thead>
+                <tbody id="messageTableBody">
+                    <!-- Message rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+       
     </div>
 </body>
 </html>
+
 

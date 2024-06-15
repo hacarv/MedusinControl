@@ -1,5 +1,6 @@
 const encryptionKey = 'your-secret-key';
 let sessions = [];
+let messages = [];
 
 // Cargar datos del localStorage
 function loadStoredData() {
@@ -48,13 +49,13 @@ function connectMQTT() {
 
     client.on('message', (topic, message) => {
         const parsedMessage = JSON.parse(message.toString());
-        handleIncomingMessage(parsedMessage);
-        displayMessage(topic, message.toString());
+        handleIncomingMessage(topic, parsedMessage);
+        displayMessage(topic, parsedMessage);
     });
 }
 
 // Manejar mensaje entrante
-function handleIncomingMessage(message) {
+function handleIncomingMessage(topic, message) {
     const { sessionId, buttonId, firstAccessDatetime } = message;
     const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
 
@@ -127,11 +128,47 @@ function updateSessionTable() {
 
 // Mostrar mensaje en la página web
 function displayMessage(topic, message) {
-    const messageList = document.getElementById('messageList');
-    const listItem = document.createElement('li');
-    listItem.className = 'list-group-item';
-    listItem.textContent = `Topic: ${topic}, Message: ${message}`;
-    messageList.appendChild(listItem);
+    const timestamp = new Date().toISOString();
+    messages.unshift({
+        sessionId: message.sessionId,
+        topic,
+        buttonId: message.buttonId,
+        receivedAt: timestamp
+    });
+
+    if (messages.length > 20) {
+        messages.pop();
+    }
+
+    updateMessageTable();
+}
+
+// Actualizar tabla de mensajes
+function updateMessageTable() {
+    const messageTableBody = document.getElementById('messageTableBody');
+    messageTableBody.innerHTML = '';
+
+    messages.forEach(message => {
+        const row = document.createElement('tr');
+
+        const sessionIdCell = document.createElement('td');
+        sessionIdCell.textContent = message.sessionId;
+        row.appendChild(sessionIdCell);
+
+        const topicCell = document.createElement('td');
+        topicCell.textContent = message.topic;
+        row.appendChild(topicCell);
+
+        const buttonIdCell = document.createElement('td');
+        buttonIdCell.textContent = message.buttonId;
+        row.appendChild(buttonIdCell);
+
+        const receivedAtCell = document.createElement('td');
+        receivedAtCell.textContent = message.receivedAt;
+        row.appendChild(receivedAtCell);
+
+        messageTableBody.appendChild(row);
+    });
 }
 
 // Enviar mensaje al servidor MQTT
