@@ -5,7 +5,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.2.6/mqtt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="js/script.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -26,7 +26,7 @@
             <button class="btn btn-primary" onclick="connectMQTT()">Connect</button>
             <button class="btn btn-danger" onclick="clearLocalStorage()">Clear Local Storage</button>
         </div>
-        <div id="statusMessage" class="alert alert-info" style="display: none;"></div>
+        <div id="statusMessage" class="alert" style="display: none;"></div>
         <hr>
         <div class="mb-4">
             <label for="publishTopic" class="form-label">Publish Topic:</label>
